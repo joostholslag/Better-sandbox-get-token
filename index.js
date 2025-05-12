@@ -8,24 +8,26 @@
 // Basic => Needs valid Username and Password
 // Token => Needs snadboxUserName, sandBoxPassword, sandboxToken(initially empty), getTokenUrl
 
-addAuthTokenString() //Needs to be a root-level of script
+// addAuthTokenString() //Needs to be a root-level of script
+var pm
 
-const getBasicAuthString = (pm) => {
+const getBasicAuthString = () => {
     const username = pm.environment.get('Username')
     const password = pm.environment.get('Password')
     const token = btoa(`${username}:${password}`)
     return `Basic ${token}`
 }
 
-async function getTokenAuthString(pm){
-   if (!isTokenValid(pm)) 
-        await getNewToken(pm)
+async function getTokenAuthString(){
+   if (!isTokenValid()) 
+        await getNewToken()
    const token = pm.environment.get("sandboxToken")
    return `Bearer ${token}`
 }
 
-async function addAuthTokenString(pm) {
-	console.log(pm)
+async function addAuthTokenString(parentPm) {
+	pm = parentPm
+	console.log('pm', pm)
 	console.log('something nice')
     let authTokenString = null;
     const authType = pm.environment?.get("authType");
@@ -34,7 +36,7 @@ async function addAuthTokenString(pm) {
         authTokenString = await getTokenAuthString()
         break;  
      case "Basic":
-        authTokenString = getBasicAuthString(pm)
+        authTokenString = getBasicAuthString()
         break;
      default:
         authTokenString = null
@@ -50,7 +52,7 @@ async function addAuthTokenString(pm) {
       console.error('Invalid Auth type')
 }
 
-function tokenExists(pm) {
+function tokenExists() {
   var token = pm.environment.get('sandboxToken')
   return (token != undefined) && (token != "") 
 }
@@ -59,7 +61,7 @@ function getTokenClaims(token) {
     return JSON.parse(atob(token.split('.')[1]))
 }
 
-function isTokenValid(pm) {
+function isTokenValid() {
   if (tokenExists()) {
     var token = getTokenClaims(pm.environment.get('sandboxToken'))
     return Math.round((new Date() / 1000)) < token.exp;
@@ -68,7 +70,7 @@ function isTokenValid(pm) {
   }
 }
 
-async function getNewToken(pm) {
+async function getNewToken() {
 
     var username = pm.variables.get('sandboxUsername')
 
