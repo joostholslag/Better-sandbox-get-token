@@ -109,3 +109,4 @@ async function getNewToken() {
     }
   });
 }
+module.exports = {addAuthTokenString}
