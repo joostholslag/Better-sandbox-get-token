@@ -10,21 +10,21 @@
 
 addAuthTokenString() //Needs to be a root-level of script
 
-const getBasicAuthString = () => {
+const getBasicAuthString = (pm) => {
     const username = pm.environment.get('Username')
     const password = pm.environment.get('Password')
     const token = btoa(`${username}:${password}`)
     return `Basic ${token}`
 }
 
-async function getTokenAuthString(){
+async function getTokenAuthString(pm){
    if (!isTokenValid()) 
         await getNewToken()
    const token = pm.environment.get("sandboxToken")
    return `Bearer ${token}`
 }
 
-async function addAuthTokenString() {
+async function addAuthTokenString(pm) {
 	console.log(pm)
 	console.log('something nice')
     let authTokenString = null;
@@ -50,7 +50,7 @@ async function addAuthTokenString() {
       console.error('Invalid Auth type')
 }
 
-function tokenExists() {
+function tokenExists(pm) {
   var token = pm.environment.get('sandboxToken')
   return (token != undefined) && (token != "") 
 }
@@ -59,7 +59,7 @@ function getTokenClaims(token) {
     return JSON.parse(atob(token.split('.')[1]))
 }
 
-function isTokenValid() {
+function isTokenValid(pm) {
   if (tokenExists()) {
     var token = getTokenClaims(pm.environment.get('sandboxToken'))
     return Math.round((new Date() / 1000)) < token.exp;
