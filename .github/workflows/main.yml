@@ -1,6 +1,6 @@
 on:
   push:
-    branches: main
+    branches: [main]
 
 jobs:
   publish:
@@ -11,6 +11,7 @@ jobs:
         with:
           node-version: "20"
       - run: npm init
+      - run: npm version major --no-git-tag-version
       - run: npm ci
       - uses: JS-DevTools/npm-publish@v3
         with:
