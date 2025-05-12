@@ -32,15 +32,15 @@ function isTokenValid() {
 	}
 }
 
-async function getNewToken() {
+function getNewToken() {
 
-	var username = await pm.vault.get('sandboxUsername')
+	var username = pm.environment.get('sandboxUsername')
 	if (!username) {
 		console.log("Cannot fetch token. Username not set, please set varaible 'sandboxUsername'");
 		return null;
 	}
 
-	var password = await pm.vault.get("sandboxPassword")
+	var password = pm.environment.get("sandboxPassword")
 	if (!password) {
 		console.log("Cannot fetch token. Password not set, please set variable 'sandboxPassword'")
 		return null;
