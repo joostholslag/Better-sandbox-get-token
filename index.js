@@ -25,6 +25,7 @@ async function getTokenAuthString(){
 }
 
 async function addAuthTokenString() {
+	console.log(pm)
     let authTokenString = null;
     const authType = pm.environment?.get("authType");
     switch(authType) {
