@@ -18,8 +18,8 @@ const getBasicAuthString = (pm) => {
 }
 
 async function getTokenAuthString(pm){
-   if (!isTokenValid()) 
-        await getNewToken()
+   if (!isTokenValid(pm)) 
+        await getNewToken(pm)
    const token = pm.environment.get("sandboxToken")
    return `Bearer ${token}`
 }
@@ -34,7 +34,7 @@ async function addAuthTokenString(pm) {
         authTokenString = await getTokenAuthString()
         break;  
      case "Basic":
-        authTokenString = getBasicAuthString()
+        authTokenString = getBasicAuthString(pm)
         break;
      default:
         authTokenString = null
@@ -68,7 +68,7 @@ function isTokenValid(pm) {
   }
 }
 
-async function getNewToken() {
+async function getNewToken(pm) {
 
     var username = pm.variables.get('sandboxUsername')
 
