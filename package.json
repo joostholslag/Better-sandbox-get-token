@@ -19,8 +19,5 @@
     "cdr"
   ],
   "author": "Joost Holslag",
-  "license": "CC0-1.0",
-  "dependencies": {
-    "better-sandbox-get-token": "^1.0.0"
-  }
+  "license": "CC0-1.0"
 }
