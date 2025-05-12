@@ -11,7 +11,7 @@ jobs:
       with:
         node-version: "20"
     - run: npm init
-    - run: npm install --save-dev semver
+    - run: npm install --no-save semver
     - name: Bump major version based on remote NPM
       run: |
         latest=$(npm view better-sandbox-get-token version)
