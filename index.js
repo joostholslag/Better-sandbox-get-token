@@ -3,7 +3,7 @@
 // set variables sandboxUsername and sandboxPassword in postman vault
 // Environment variables are required: ehrApiUrl, openEhrApiUrl, terminologyUrl, demographicsUrl, getTokenUrl
 
-function tokenExists() {
+function tokenExists(pm) {
 	var token = pm.environment.get('sandboxToken')
 	return (token != undefined) && (token != "")
 }
@@ -23,7 +23,7 @@ function getTokenPayload(token) {
     return JSON.parse(jsonPayload);
 }
 
-function isTokenValid() {
+function isTokenValid(pm) {
 	if (tokenExists()) {
 		var token = getTokenPayload(pm.environment.get('sandboxToken'))
 		return Math.round((new Date() / 1000)) < token.exp;
@@ -32,7 +32,7 @@ function isTokenValid() {
 	}
 }
 
-function getNewToken() {
+function getNewToken(pm) {
 
 	var username = pm.environment.get('sandboxUsername')
 	if (!username) {
