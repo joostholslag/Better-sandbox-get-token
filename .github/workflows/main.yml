@@ -19,7 +19,6 @@ jobs:
         new_major=$((major + 1))
         new_version="$new_major.0.0"
         npm version $new_version --no-git-tag-version
-    - run: npm version major --no-git-tag-version
     - run: npm ci
     - uses: JS-DevTools/npm-publish@v3
       with:
