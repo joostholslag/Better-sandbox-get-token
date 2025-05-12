@@ -6,13 +6,21 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v3
-        with:
-          node-version: "20"
-      - run: npm init
-      - run: npm version major --no-git-tag-version
-      - run: npm ci
-      - uses: JS-DevTools/npm-publish@v3
-        with:
-          token: ${{ secrets.NPM_TOKEN }}
+    - uses: actions/checkout@v4
+    - uses: actions/setup-node@v3
+      with:
+        node-version: "20"
+    - run: npm init
+    - run: npm install semver
+    - name: Bump major version based on remote NPM
+      run: |
+        latest=$(npm view better-sandbox-get-token version)
+        major=$(node -e "console.log(require('semver').major(process.argv[1]))" $latest)
+        new_major=$((major + 1))
+        new_version="$new_major.0.0"
+        npm version $new_version --no-git-tag-version
+    - run: npm version major --no-git-tag-version
+    - run: npm ci
+    - uses: JS-DevTools/npm-publish@v3
+      with:
+        token: ${{ secrets.NPM_TOKEN }}
